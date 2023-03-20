@@ -6,10 +6,11 @@ class TackleBoxItemsController < ApplicationController
 
   def index
     item = current_user.tackle_box_item_for_most_recent_catch
+
     if !item.nil?
       redirect_to action: :show, id: item
     else
-      render :empty
+      render partial: 'baits/bait', object: @bait
     end
   end
 
@@ -34,13 +35,27 @@ class TackleBoxItemsController < ApplicationController
     @bait = Bait.find(params[:bait_id])
     @item = current_user.tackle_box_items.create!(bait: @bait)
 
-    redirect_to baits_url
+    #  Assign the bait to my_tackle_box
+    @bait.my_tackle_box_item = @item
+
+    #  We want to update two portions of the dom here:
+    #   - the "bait_1" partial to toggle the button on the bait between Add and Remove
+    #   - the count of the itms in the tackle box
+    #  To do that, we can use render a turbo_stream here.  To do that, use the rails default
+    #  nomenclature for a create action and create file create.turbo_stream.erb
   end
 
   def destroy
     @item = current_user.tackle_box_items.find(params[:id])
+
+    #  Translate the tackle_box_item sent via params into its associated bait
+    @bait = @item.bait
+
+    #  Destroy the tackle_box_item
     @item.destroy
 
-    redirect_to baits_url
+    # We want to update the same two portions of the dom that we did in the create action.
+    # So, just render the create turbo_steam
+    render 'tackle_box_items/create'
   end
 end

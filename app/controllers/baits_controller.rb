@@ -8,6 +8,7 @@ class BaitsController < ApplicationController
     @bait_categories = Bait.pluck(:category).uniq
 
     @baits = current_user.assign_my_tackle_box_items_to_baits(@baits) if signed_in?
+
   end
 
   def show
