@@ -34,14 +34,16 @@ class FishCatchesController < ApplicationController
       @new_catch = current_user.fish_catches
                                .new(bait: @fish_catch.bait)
     else
-      render :new, status: :unprocessable_entity
+      # re-render the form to display the user's entry error(s)
+      render partial: 'fish_catches/form',
+             locals: { fish_catch: @fish_catch },
+             status: :unprocessable_entity
     end
   end
 
   def destroy
+    @fish_catches = fish_catches_for_bait(@fish_catch.bait)
     @fish_catch.destroy
-
-    redirect_to tackle_box_item_for_catch(@fish_catch)
   end
 
   private
