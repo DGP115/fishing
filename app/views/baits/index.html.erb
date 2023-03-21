@@ -2,8 +2,10 @@
   <%= form_with(url: baits_path,
                 method: :get,
                 data: { turbo_frame: "results_of_bait_search_filter",
-                        turbo_action: "advance" } # to add search criteria to addresss bar
-               ) do |f| %>
+                        turbo_action: "advance",  # to add search criteria to addresss bar
+                        controller: "baits-filter-form",  # the name of stimulus controller
+                        action: "input->baits-filter-form#submit"} # event->controller#method
+                ) do |f| %>
     <div>
       <%= f.search_field :name, placeholder: 'Name...',
             value: params[:name] %>

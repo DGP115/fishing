@@ -6,17 +6,27 @@
   <% end %>
 </div>
 
-<div class="selected-item">
-  <div class="header">
-    <div class="name-category">
-      <%= @item.bait.name %> &bull; <%= @item.bait.category %>
+<!-- In this section of the page, the app updates the list of fish catches
+    for the given tackle_box item (bait).
+
+    By wrapping this list of fish catches in a turbo_frame, Turbo ensures
+    that only this list is updated on new renders, since the item is not changed.
+
+    That is all we have to do to segment the updates of the fish_catches list [per item]
+-->
+<%= turbo_frame_tag dom_id(@item) do %>
+  <div class="selected-item">
+    <div class="header">
+      <div class="name-category">
+        <%= @item.bait.name %> &bull; <%= @item.bait.category %>
+      </div>
+      <%= render "stats", fish_catches: @fish_catches %>
     </div>
-    <%= render "stats", fish_catches: @fish_catches %>
-  </div>
 
-  <%= render "fish_catches/form", fish_catch: @new_catch %>
+    <%= render "fish_catches/form", fish_catch: @new_catch %>
 
-  <div class="catches">
-    <%= render @fish_catches %>
+    <div class="catches">
+      <%= render @fish_catches %>
+    </div>
   </div>
-</div>
+<% end %>

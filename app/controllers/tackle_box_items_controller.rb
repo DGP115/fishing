@@ -10,7 +10,7 @@ class TackleBoxItemsController < ApplicationController
     if !item.nil?
       redirect_to action: :show, id: item
     else
-      render partial: 'baits/bait', object: @bait
+      render 'tackle_box_items/empty'
     end
   end
 
