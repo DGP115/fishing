@@ -7,5 +7,8 @@ import { application } from "./application"
 import BaitsFilterFormController from "./baits_filter_form_controller"
 application.register("baits-filter-form", BaitsFilterFormController)
 
+import FlashMessageDisplayController from "./flash_message_display_controller"
+application.register("flash-message-display", FlashMessageDisplayController)
+
 import HelloController from "./hello_controller"
 application.register("hello", HelloController)

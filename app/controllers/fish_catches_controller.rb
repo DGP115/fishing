@@ -21,6 +21,11 @@ class FishCatchesController < ApplicationController
   def update
     if @fish_catch.update(fish_catch_params)
       @fish_catches = fish_catches_for_bait(@fish_catch.bait)
+      # Normally, a flash message is displayed on the next rendering of whatever
+      # layout the flash partial is in.  When using Turbo, the full page is not being
+      # refreshed, so we want to render the flash message on this cycle.
+      # So, we use flash.now.
+      flash.now[:notice] = 'The catch was successfully updated.'
     else
       render :edit, status: :unprocessable_entity
     end
@@ -44,6 +49,12 @@ class FishCatchesController < ApplicationController
   def destroy
     @fish_catches = fish_catches_for_bait(@fish_catch.bait)
     @fish_catch.destroy
+
+    # Normally, a flash message is displayed on the next rendering of whatever
+    # layout the flash partial is in.  When using Turbo, the full page is not being
+    # refreshed, so we want to render the flash message on this cycle.
+    # So, we use flash.now.
+    flash.now[:notice] = 'The catch was successfully deleted.'
   end
 
   private

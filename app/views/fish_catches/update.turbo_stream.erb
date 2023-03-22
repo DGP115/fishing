@@ -5,3 +5,5 @@
 <%= turbo_stream.replace dom_id(@fish_catch),
                         partial: "fish_catches/fish_catch",
                         locals: { fish_catch: @fish_catch } %>
+<!--  Call to a helper -->
+<%= update_flash_messages %>

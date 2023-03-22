@@ -20,7 +20,7 @@ export default class extends Controller {
   }
 
   submit() {
-    // We want this controller to submit teh filter/sort form contents
+    // We want this controller to submit the filter/sort form contents
     // Since it is attached to the form, simply submit this element
     this.element.requestSubmit();
   }
