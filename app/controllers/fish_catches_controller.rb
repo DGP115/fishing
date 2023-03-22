@@ -20,7 +20,7 @@ class FishCatchesController < ApplicationController
 
   def update
     if @fish_catch.update(fish_catch_params)
-      redirect_to tackle_box_item_for_catch(@fish_catch)
+      @fish_catches = fish_catches_for_bait(@fish_catch.bait)
     else
       render :edit, status: :unprocessable_entity
     end
