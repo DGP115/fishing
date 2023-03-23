@@ -3,6 +3,10 @@
     Sorry, no catches yet. 😕
   </h2>
   <p>
-    <%= link_to "Log a catch!", tackle_box_items_path %>
+    <!--Need the turbo_frame: "_top" so that this link breaks out of the turbo_frame it is in.
+        This link is within turbo_frame_tag "fish_catches_list".
+        But its response, the Tackle_box show page, is not within that turbo_frame.
+        So, we have to tell Turbo to not require the response to be within turbo_frame_tag "fish_catches_list" -->
+    <%= link_to "Log a catch!", tackle_box_items_path, data: { turbo_frame: "_top" } %>
   </p>
 </div>
