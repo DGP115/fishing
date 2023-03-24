@@ -12,6 +12,9 @@ module FishCatchesHelper
     params = request.params
                     .merge(sort: column, direction: next_direction(column))
 
+    # NOTE:  Do not specify the data-controller here becaase that caused problems and
+    #        is redundent, since this link is within <div data-controller="sort-link">
+    #        in the DOM [via fish_catches/index.html.erb]
     link_to name, params, data: { turbo_action: 'advance',
                                   action: 'turbo:click->sort-link#updateForm' }
   end

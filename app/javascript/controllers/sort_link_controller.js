@@ -2,7 +2,7 @@ import { Controller } from "@hotwired/stimulus"
 
 // Connects to data-controller="sort-link"
 export default class extends Controller {
-  // These stimulus targets maps to the targets defined in the DOM.
+  // These stimulus targets map to the targets defined in the DOM.
   // This will allow this controller to write to them directly
   static targets = ["sort", "direction"]
 
@@ -12,6 +12,7 @@ export default class extends Controller {
 
   updateForm(event) {
     // Javascript function that extraces the search params from the passed in url
+
     let searchParams = new URL(event.detail.url).searchParams
 
     // 'this.sortTarget translates to our field in the DOM

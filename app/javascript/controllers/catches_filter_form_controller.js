@@ -8,6 +8,7 @@ export default class extends Controller {
   }
 
   initialize() {
+    console.log("initialize", this.element);
     //  debounce works on a function we give it.
     //  In this case, we want to debounce the submit() action, so this.submit.bind(this)
     //  The second argument is the number of milli-seconds to wait before allowing
@@ -22,6 +23,7 @@ export default class extends Controller {
   submit() {
     // We want this controller to submit the filter/sort form contents
     // Since it is attached to the form, simply submit this element
+    console.log("submit", this.element);
     this.element.requestSubmit();
   }
 }
