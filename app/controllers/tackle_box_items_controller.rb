@@ -41,8 +41,8 @@ class TackleBoxItemsController < ApplicationController
     #  We want to update two portions of the dom here:
     #   - the "bait_1" partial to toggle the button on the bait between Add and Remove
     #   - the count of the itms in the tackle box
-    #  To do that, we can use render a turbo_stream here.  To do that, use the rails default
-    #  nomenclature for a create action and create file create.turbo_stream.erb
+    #  To do that, we can use a turbo_stream here.  To do that, use the rails default
+    #  nomenclature for a create action and file create.turbo_stream.erb
   end
 
   def destroy
