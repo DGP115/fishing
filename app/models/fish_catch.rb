@@ -2,6 +2,8 @@
 
 #  Model for FishCatch
 class FishCatch < ApplicationRecord
+  include ActionView::RecordIdentifier  # Needed to use dom_id helper
+
   belongs_to :bait
   belongs_to :user
   has_many :likes, dependent: :destroy
@@ -26,7 +28,7 @@ class FishCatch < ApplicationRecord
             presence: true,
             numericality: { greater_than: 0 }
 
-  #  'attr_accessor allows reading and writing to class variable 'my-like',
+  #  'attr_accessor allows reading and writing to class variable 'my_like',
   #   in this case, without having to specify methods for doing so.
   attr_accessor :my_like
 
@@ -41,4 +43,30 @@ class FishCatch < ApplicationRecord
   scope :with_weight_between, lambda { |low, high|
     where(weight: low..high) if low.present? && high.present?
   }
+
+  # Turbo_Stream broadcasts re new fish catch activity
+  after_create_commit do
+    broadcast_prepend_later_to(
+      'activity_update',
+      target: 'catches',
+      partial: 'activity/fish_catch',
+      locals: { fish_catch: self }
+    )
+  end
+
+  after_update_commit do
+    broadcast_replace_later_to(
+      'activity_update',
+      target: "#{dom_id(self)}_details",
+      partial: 'activity/catch_details',
+      locals: { fish_catch: self }
+    )
+  end
+
+  after_destroy_commit do
+    broadcast_remove_to(
+      'activity_update',
+      target: dom_id(self)
+    )
+  end
 end
