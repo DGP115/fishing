@@ -2,7 +2,7 @@
 
 #  Model for FishCatch
 class FishCatch < ApplicationRecord
-  include ActionView::RecordIdentifier  # Needed to use dom_id helper
+  include ActionView::RecordIdentifier # Needed to use dom_id helper
 
   belongs_to :bait
   belongs_to :user

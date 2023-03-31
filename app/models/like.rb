@@ -2,32 +2,29 @@
 
 #  Fisch castch Likes model
 class Like < ApplicationRecord
+  include ActionView::RecordIdentifier  # Needed to use dom_id helper
+
   belongs_to :user
   belongs_to :fish_catch, counter_cache: true
 
-  # Turbo_Stream broadcasts re new like activity
   after_create_commit do
-    broadcast_prepend_later_to(
+    broadcast_update_later_to(
       'activity_update',
-      target: 'catches',
-      partial: 'activity/fish_catch',
-      locals: { fish_catch: self }
+      target: "#{dom_id(self.fish_catch)}_likes_count",
+      html: self.fish_catch.likes_count
     )
   end
 
-  after_update_commit do
-    broadcast_replace_later_to(
-      'activity_update',
-      target: self,
-      partial: 'activity/catch_details',
-      locals: { fish_catch: self }
-    )
-  end
-
+  # NOTE: line 'locals: { like: nil }' is necessary to avoid deserialization error.
+  #       By default, the broadcast contains a "locals: { like: self }"
+  #       BUT: becuase we are broadcasting asynchronously after a destroy, it is
+  #       possible that the like has been deleted, so set it to nil here.
   after_destroy_commit do
-    broadcast_remove_to(
+    broadcast_update_later_to(
       'activity_update',
-      target: self
+      target: "#{dom_id(self.fish_catch)}_likes_count",
+      html: self.fish_catch.likes_count,
+      locals: { like: nil }
     )
   end
 end
